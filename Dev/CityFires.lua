@@ -12,6 +12,7 @@ end
 -- upon these conditions, stop the fire, remove the scheduler, and marker
 function StopFire(ExplosionName)
   Player = GROUP:FindByName("Rotary-1")
+  Player:
   
   -- iterate through table of fire zones to determine if inside the zone or not
   for i, v in pairs(firezones) do
@@ -28,8 +29,7 @@ end
 -- populate a table with the amount of ME zones created and start their fires
 firezones = {}
 count = 0
-MEZoneCount = 15
-while count <=  MEZoneCount = 15 do
+while count <= 7 do
   num = math.random(1,5)
   firezones[num] = true
   count = count + 1
@@ -43,8 +43,15 @@ end
 
 
 -- initiate a single scheduler to check if we need to put out any fires
-SchedulerID = SCHEDULER:New(nil, StopFire, {}, 1, 3, 0, 900)
- 
+SchedulerID = SCHEDULER:New(nil, StopFire, {}, 1, 10, 0, 900)
+
+-- TODO --
+-- Create water zones to hover in
+-- Hover < 20m 
+-- Deploy ropes?
+-- Set Cargo in Group with weight
+-- Set minimum altitude to avoid fire explosion in Stop Fire
+-- Set flag in table per unit or check cargo in StopFire
+
+
 env.info("CityFireNew loaded successfully", true)
-
-
