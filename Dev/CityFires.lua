@@ -10,11 +10,17 @@ end
 
 -- determines if a group has entered the zone and come to a near hover inside of it
 -- upon these conditions, stop the fire, remove the scheduler, and marker
-function StopFire()
+function StopFire(ExplosionName)
   Player = GROUP:FindByName("Rotary-1")
-  if Player:IsCompletelyInZone(CitySmoke) and Player:GetAirspeedTrue() < 20 then
-    CitySmokeCoords:StopBigSmokeAndFire(ExplosionName)  
-    env.info("Fire out", false)
+  
+  -- iterate through table of fire zones to determine if inside the zone or not
+  for i, v in pairs(firezones) do
+    if Player:IsCompletelyInZone(ZONE:FindByName("CitySmoke" .. i)) and Player:GetAirspeedTrue() < 30 then
+      ExplosionName = "CitySmokeFire" .. i
+      CitySmokeCoords:StopBigSmokeAndFire(ExplosionName)  
+      env.info("Fire out", true)
+    else env.warning("else",false) 
+    end
   end
 end
 
@@ -29,19 +35,15 @@ while count <= 7 do
 end
 
 
+-- start all the fires in the randomly selected zones from above "firezones"
 for i, v in pairs(firezones) do
   StartFire(i)
 end 
 
 
-
-for fire, v in pairs(firezones) do
-  SchedulerID = SCHEDULER:New(nil, StopFire, {}, 1, 3, 0, 900)
-  env.info("Scheduled for " .. fire, true)
-  SchedulerID:Remove()
-  env.info("Scheduler removed",true)
-end  
-
-env.info("Its working!", true)
+-- initiate a single scheduler to check if we need to put out any fires
+SchedulerID = SCHEDULER:New(nil, StopFire, {}, 1, 3, 0, 900)
+ 
+env.info("CityFireNew loaded successfully", true)
 
 
