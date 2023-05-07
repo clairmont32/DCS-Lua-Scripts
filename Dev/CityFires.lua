@@ -28,7 +28,8 @@ end
 -- populate a table with the amount of ME zones created and start their fires
 firezones = {}
 count = 0
-while count <= 7 do
+MEZoneCount = 15
+while count <=  MEZoneCount = 15 do
   num = math.random(1,5)
   firezones[num] = true
   count = count + 1
